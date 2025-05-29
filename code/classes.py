@@ -1,19 +1,14 @@
-import argparse
 import socket
 
 
-class Client:
+class TCPClient:
 
     def __init__(self, timeout: int = -1):
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.timeout = timeout
+        self.sock = None
         self.connected = False
 
-    def create_socket(self) -> None:
-        if self.sock:
-            self.sock.close()
+        self.timeout = timeout
 
-        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     def start_connection(self, host: str, port: int) -> None:
         if self.connected:
@@ -68,14 +63,11 @@ class Client:
             self.send_data(data)
             self.receive_data()
 
+    def _create_socket(self) -> None:
+        if self.sock is socket.socket:
+            self.sock.close()
+
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
     def __del__(self):
         self.sock.close()
-
-
-if __name__ == '__main__':
-    test = Client(timeout=5)
-    test.start_connection('172.19.218.20', 4444)
-    test.send_data('Hello, World!')
-    test.receive_data()
-
-    test.start_connection('127.0.0.1', 4444)
