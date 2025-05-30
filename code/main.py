@@ -8,7 +8,7 @@ if __name__ == '__main__':
     PORT = 4444
 
     test_client = TCPClient(3)
-    test_client.start_connection(TARGET1, PORT)
+    test_client.start_connection(TARGET2, PORT)
     test_client.interactive_session()
     test_client.close_connection()
 

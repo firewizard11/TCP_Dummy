@@ -85,26 +85,32 @@ class TCPClient:
 
 class TCPServer:
     
-    def __init__():
-        pass
+    def __init__(self, ip: str = ''):
+        self.ip = ip
+        self.open_ports: dict[int,socket] = dict()
 
-    def open_port():
-        pass
+    def start_listener(self, port: int) -> None:
+        self.open_ports[port] = socket(AF_INET, SOCK_STREAM)
+        current_port = self.open_ports[port]
 
-    def close_port():
-        pass
+        current_port.bind((self.ip, port))
+        current_port.listen(5)
 
-    def is_open():
-        pass
+        while True:
+        
+            conn, in_addr = current_port.accept()
 
-    def is_listening():
-        pass
+            print(f'[+] Connection From {in_addr[0]}:{in_addr[1]}')
 
-    def start_server():
-        pass
+            while True:
+                request = conn.recv(4096).decode()
 
-    def close_server():
-        pass
+                if len(request) == 0:
+                    break
 
-    def __del__():
-        pass
+                print(request)
+
+
+if __name__ == '__main__':
+    test_server = TCPServer()
+    test_server.start_listener(4444)
